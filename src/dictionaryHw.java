@@ -1,7 +1,7 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
+
+import static java.time.chrono.JapaneseEra.values;
 
 public class dictionaryHw {
   //Во всех задачах разбивайте решение на несколько коммитов:
@@ -63,47 +63,50 @@ public class dictionaryHw {
   //код, который нужен, чтобы исправить несовершенство ранее написанного код
   public static void main(String[] args) throws IOException {
     BufferedReader wordReader = new BufferedReader(new InputStreamReader(System.in));
-
+    BufferedReader dictionaryReader = new BufferedReader
+        (new FileReader(".idea/res/dictionary.txt"));
     Map<String, String> dictionary = new HashMap<>();
-    dictionary.put("Адаптив", "адаптивный дизайн, " +
-        "адаптация интерфейса к использованию на разных экранах");
-    dictionary.put("Аджайл", "от англ. Agile. Общий термин," +
-        " который описывает ценности и принципы " +
-        "гибкой разработки программного обеспечения," +
-        " а также практические подходы к разработке. " +
-        "Понятие Agile стало популярным после публикации " +
-        "Манифеста гибкой разработки программного обеспечения в 2001 году");
-    dictionary.put("айдишник", "id, идентификатор");
-    dictionary.put("альфа", "этап разработки программного обеспечения, " +
-        "на котором разработчики добавляют в программу новые функции," +
-        " а тестировщики испытывают программу. Это внутренний или непубличный этап");
-    dictionary.put("апишка", "API, " +
-        "программный интерфейс приложения или интерфейс прикладного программирования");
-    dictionary.put("апрув", "от англ. Approve. Одобрение, одобрить, утвердить");
-    dictionary.put("аутсорс", "аутсорсинг, " +
-        "передача компанией части операционной деятельности другой компании");
+    String name = String.valueOf(0);
+    String value = String.valueOf(0);
+    //читаем количество строк в словаре:
+    int n = Integer.parseInt(dictionaryReader.readLine());
+    //System.out.println(n);
+    //читаем словарь и разбираем на слова и определения:
+    for (int i = 1; i < n; ++i) { // прочитать n раз
+      String line = dictionaryReader.readLine().toLowerCase(); // читаем строку.
+      int spaceIndex = line.lastIndexOf(':'); // до первого двоеточия- слово ( выясняем индекс":").
+      name = line.substring(0, spaceIndex); // отрезали "слово".
+      value = line.substring(spaceIndex + 2); //  отрезали "определение".
+      dictionary.put(name, value);//записали в словарь полученные значения
+    }
+
 
     int m = Integer.parseInt(wordReader.readLine());
-    int i = 0;
+    int a = 0;
     List<String> words = new ArrayList<>();
-    while (i < m) {
+    while (a < m) {
       String word = wordReader.readLine().toLowerCase();
       words.add(word);
-      i++;
+      a++;
     }
-    System.out.println(Arrays.toString(new List[]{words}));
+    //System.out.println(Arrays.toString(new List[]{words}));
 
     int j = 0;
     while (j < m) {
-      String word = words.get(j);
+      name = words.get(j);
       ++j;
-      String value = dictionary.get(word);
+      value = dictionary.get(name);
       if (value == null) {
         System.out.println("Не найдено");
       } else {
         System.out.println(value);
+
       }
+
+      dictionaryReader.close();
     }
   }
 }
+
+
 
