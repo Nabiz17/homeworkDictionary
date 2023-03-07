@@ -1,9 +1,61 @@
 import java.io.*;
 import java.util.*;
 
-import static java.time.chrono.JapaneseEra.values;
 
-public class dictionaryHw {
+public class dictionary {
+
+
+  public static void printAnswer(Map<String, String> dictionary,
+                                 List<String> words, int m) {
+    String value = null;
+    String name = null;
+    int j = 0;
+    while(j < m)
+    {
+      name = words.get(j);
+      ++j;
+      value = dictionary.get(name);
+      System.out.println(Objects.requireNonNullElse(value, "Не найдено"));
+    }
+  }
+
+  public static List<String> readRequest() throws IOException {
+    BufferedReader wordReader = new BufferedReader(new InputStreamReader(System.in));
+    int m = Integer.parseInt(wordReader.readLine());
+    int a = 0;
+    List<String> words = new ArrayList<>();
+    while (a < m) {
+      String word = wordReader.readLine().toLowerCase();
+      words.add(word);
+      a++;
+    }
+    //System.out.println(Arrays.toString(new List[]{words}));
+    return (words);
+  }
+
+  public static Map<String, String> readDictionary() throws IOException {
+    Map<String, String> dictionary = new HashMap<>();
+    String name;
+    String value;
+
+    BufferedReader dictionaryReader = new BufferedReader
+        (new FileReader(".idea/res/dictionary.txt"));
+
+    //читаем количество строк в словаре:
+    int n = Integer.parseInt(dictionaryReader.readLine());
+    //System.out.println(n);
+    //читаем словарь и разбираем на слова и определения:
+    for (int i = 1; i < n; ++i) {// прочитать n раз
+      String line = dictionaryReader.readLine().toLowerCase(); // читаем строку.
+      int spaceIndex = line.lastIndexOf(':'); // до первого двоеточия- слово ( выясняем индекс":").
+      name = line.substring(0, spaceIndex); // отрезали "слово".
+      value = line.substring(spaceIndex + 2); //  отрезали "определение".
+      dictionary.put(name, value);//записали в словарь полученные значения
+    }
+    dictionaryReader.close();
+    return (dictionary);
+      }
+
   //Во всех задачах разбивайте решение на несколько коммитов:
   //
   //условие в комментарии и никакого кода
@@ -61,50 +113,11 @@ public class dictionaryHw {
   //язык программирования Python
   //Не найдено
   //код, который нужен, чтобы исправить несовершенство ранее написанного код
-  public static void main(String[] args) throws IOException {
-    BufferedReader wordReader = new BufferedReader(new InputStreamReader(System.in));
-    BufferedReader dictionaryReader = new BufferedReader
-        (new FileReader(".idea/res/dictionary.txt"));
-    Map<String, String> dictionary = new HashMap<>();
-    String name = String.valueOf(0);
-    String value = String.valueOf(0);
-    //читаем количество строк в словаре:
-    int n = Integer.parseInt(dictionaryReader.readLine());
-    //System.out.println(n);
-    //читаем словарь и разбираем на слова и определения:
-    for (int i = 1; i < n; ++i) { // прочитать n раз
-      String line = dictionaryReader.readLine().toLowerCase(); // читаем строку.
-      int spaceIndex = line.lastIndexOf(':'); // до первого двоеточия- слово ( выясняем индекс":").
-      name = line.substring(0, spaceIndex); // отрезали "слово".
-      value = line.substring(spaceIndex + 2); //  отрезали "определение".
-      dictionary.put(name, value);//записали в словарь полученные значения
-    }
+  public static void main(String[] args, int m) throws IOException {
 
-
-    int m = Integer.parseInt(wordReader.readLine());
-    int a = 0;
-    List<String> words = new ArrayList<>();
-    while (a < m) {
-      String word = wordReader.readLine().toLowerCase();
-      words.add(word);
-      a++;
-    }
-    //System.out.println(Arrays.toString(new List[]{words}));
-
-    int j = 0;
-    while (j < m) {
-      name = words.get(j);
-      ++j;
-      value = dictionary.get(name);
-      if (value == null) {
-        System.out.println("Не найдено");
-      } else {
-        System.out.println(value);
-
-      }
-
-      dictionaryReader.close();
-    }
+    readDictionary();
+    readRequest();
+    printAnswer(readDictionary(),readRequest(),m);
   }
 }
 
