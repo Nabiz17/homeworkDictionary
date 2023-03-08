@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+import static com.sun.org.apache.xerces.internal.util.XMLChar.trim;
+
 
 public class dictionary {
 
@@ -41,7 +43,8 @@ public class dictionary {
       }
         //System.out.println(Arrays.toString(new List[]{words}));
       } catch(NumberFormatException e){
-        System.err.println("Неверно указано количество слов в словаре (неверный формат числа)"
+        System.err.println("Неверно указано количество слов в словаре " +
+            "(неверный формат числа)"
             + e.getMessage());
       }
       return (words);
@@ -71,9 +74,11 @@ public class dictionary {
           if (line.isEmpty()) {
             System.out.println("Словарь пуст");
           }
-          int spaceIndex = line.lastIndexOf(':'); // до первого двоеточия- слово ( выясняем индекс":").
+          int spaceIndex = line.lastIndexOf(':'); // до первого двоеточия-слово
+          // (выясняем индекс":").
           name = line.substring(0, spaceIndex); // отрезали "слово".
-          value = line.substring(spaceIndex + 2); //  отрезали "определение".
+          value = trim(line.substring(spaceIndex + 1));
+          //отрезали "определение и лишний пробел".
           dictionary.put(name, value);//записали в словарь полученные значения
         }
         dictionaryReader.close();
@@ -83,7 +88,8 @@ public class dictionary {
       } catch (IndexOutOfBoundsException e) {
         System.err.println("Ошибка в файле: в строке нет двоеточия между словом и определением");
       } catch (NumberFormatException e) {
-        System.err.println("Неверно указано количество слов в словаре (неверный формат числа)" + e.getMessage());
+        System.err.println("Неверно указано количество слов в словаре (неверный формат числа)"
+            + e.getMessage());
       }
       return (dictionary);
     }
