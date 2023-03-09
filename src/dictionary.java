@@ -8,11 +8,11 @@ public class dictionary {
 
 
   public static void printAnswer(Map<String, String> dictionary,
-                                 List<String> words, int m) {
+                                 List<String> words) {
     String value;
     String name;
     int j = 0;
-    while (j < m) {
+    while (j < words.size()) {
       name = words.get(j);
       ++j;
       value = dictionary.get(name);
@@ -77,7 +77,7 @@ public class dictionary {
           int spaceIndex = line.lastIndexOf(':'); // до первого двоеточия-слово
           // (выясняем индекс":").
           name = line.substring(0, spaceIndex); // отрезали "слово".
-          value = trim(line.substring(spaceIndex + 1));
+          value = line.substring(spaceIndex + 2);
           //отрезали "определение и лишний пробел".
           dictionary.put(name, value);//записали в словарь полученные значения
         }
@@ -155,7 +155,7 @@ public class dictionary {
 
       readDictionary();
       readRequest();
-      printAnswer(readDictionary(), readRequest(), m);
+      printAnswer(readDictionary(), readRequest());
     }
   }
 
